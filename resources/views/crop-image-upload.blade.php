@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -64,6 +64,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+
+                    <button type="button" class="btn btn-success" id="roated" >Rote 90deg</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="crop">Crop</button>
                 </div>
@@ -86,8 +88,11 @@
             if (files && files.length > 0) {
                 file = files[0];
                 if (URL) {
+                    console.log(URL.createObjectURL)
+
                     done(URL.createObjectURL(file));
                 } else if (FileReader) {
+                    console.log(FileReader)
                     reader = new FileReader();
                     reader.onload = function (e) {
                         done(reader.result);
@@ -99,17 +104,24 @@
         $modal.on('shown.bs.modal', function () {
             cropper = new Cropper(image, {
                 aspectRatio: 1,
-                viewMode: 3,
-                preview: '.preview'
+                viewMode: 2,
+                preview: '.preview',
+                zoomOnWheel: true,
             });
         }).on('hidden.bs.modal', function () {
             cropper.destroy();
             cropper = null;
         });
+
+        $('#roated').click(function(){
+            cropper.rotate(90)
+        });
+
+
         $("#crop").click(function () {
             canvas = cropper.getCroppedCanvas({
-                width: 160,
-                height: 160,
+                width: 500,
+                height: 500,
             });
             canvas.toBlob(function (blob) {
                 url = URL.createObjectURL(blob);

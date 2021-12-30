@@ -16,6 +16,8 @@ class CropImageController extends Controller
 
     public function uploadCropImage(Request $request)
     {
+
+        // $some = $request->all();
         $folderPath = public_path('upload/');
 
         $image_parts = explode(";base64,", $request->image);
@@ -34,5 +36,14 @@ class CropImageController extends Controller
          $saveFile->save();
 
         return response()->json(['success'=>'Crop Image Uploaded Successfully']);
+        // return response()->json($some);
     }
+
+    public function test(Request $request)
+    {
+        return $request->all();
+    }
+
+
+
 }
